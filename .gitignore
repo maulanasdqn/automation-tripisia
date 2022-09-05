@@ -1,4 +1,4 @@
-./node_modules
-./.direnv
+node_modules
+.direnv
 yarn-error.log
-./dist
+dist
