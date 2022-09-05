@@ -10,11 +10,12 @@ const MainApp = async () => {
       headless: false,
     });
     const page = await browser.newPage();
-    await page.goto(process.env.URL, {
+    await page.goto(process.env.BASE_URL + "/signin", {
       waitUntil: "networkidle0",
     });
     await Login(page);
     console.log("Input data...");
+    await page.waitForNetworkIdle();
     await InputData(page);
     // await browser.close();
   } catch (err) {
