@@ -1,7 +1,7 @@
 import fs from "fs";
 
 export const InputData = async (page: any) => {
-  let datas = JSON.parse(fs.readFileSync("dataset.json", "utf8"));
+  let datas = JSON.parse(fs.readFileSync(process.env.DATASET, "utf8"));
   await page.goto(process.env.BASE_URL + "/dashboard/add_poi", {
     waitUntil: "domcontentloaded",
   });
@@ -16,8 +16,8 @@ export const InputData = async (page: any) => {
     await page.type("textarea[name=input-how]", data.how);
     await page.type("textarea[name=input-tips]", data.tips);
     await page.type("input[name=input-address]", data.address);
-    await page.type("input[name=input-lat]", data.lat);
-    await page.type("input[name=input-lng]", data.lng);
+    await page.type("input[name=input-lat]", data.lat.replace(",", "."));
+    await page.type("input[name=input-lng]", data.lng.replace(",", "."));
     await page.type("input[name=input-phone]", data.phone);
     await page.type("input[name=input-price-min]", data.price_min);
     await page.type("input[name=input-price-max]", data.price_max);
@@ -72,18 +72,18 @@ export const InputData = async (page: any) => {
       '//*[@id="form-validation"]/div[18]/div/div[3]/div[2]/div/div/input'
     );
     await openHour[0].click();
-    const openHourList = await page.$x('//*[@id="h-0"]');
+    const openHourList = await page.$x(`//*[@id="h-${data.open_hour}"]`);
     await openHourList[0].click();
     const openBtn = await page.$x("/html/body/div[6]/div/div[2]/button[4]");
     await openBtn[0].click();
-    const openMinuteClick = await page.$x('//*[@id="m-0"]');
+    const openMinuteClick = await page.$x(`//*[@id="m-${data.open_minute}"]`);
     await openMinuteClick[0].click();
     await openBtn[0].click();
     const closeHour = await page.$x(
       '//*[@id="form-validation"]/div[18]/div/div[4]/div[2]/div/div/input'
     );
     await closeHour[0].click();
-    const closeHourList = await page.$x('//*[@id="h-23"]');
+    const closeHourList = await page.$x(`//*[@id="h-${data.close_hour}"]`);
     await closeHourList[0].click();
     const closeBtn = await page.$x("/html/body/div[7]/div/div[2]/button[4]");
     await closeBtn[0].click();
