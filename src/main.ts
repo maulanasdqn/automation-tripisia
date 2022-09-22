@@ -8,12 +8,13 @@ const MainApp = async () => {
   try {
     const browser = await app.launch({
       executablePath: process.env.CHROMIUM,
-      headless: true,
+      headless: false,
     });
     const page = await browser.newPage();
     const Automate = async () => {
       await page.goto(process.env.BASE_URL + "/signin", {
         waitUntil: "networkidle0",
+        timeout: 0,
       });
       await Login(page);
       console.log("Input data...");
@@ -25,9 +26,9 @@ const MainApp = async () => {
       await Scraping(page);
     };
 
-    // await Automate();
-    await Scrap();
-    // await browser.close();
+    await Automate();
+    // await Scrap();
+    await browser.close();
   } catch (err) {
     throw err;
   }
